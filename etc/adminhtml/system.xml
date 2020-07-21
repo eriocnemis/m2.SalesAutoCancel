@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © Eriocnemis, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <section id="sales">
+            <group id="eriocnemis_sales_autocancel" translate="label" sortOrder="300" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Orders Auto Canceling</label>
+                <field id="enabled" translate="label" sortOrder="10" type="select" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enable</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="age" translate="label" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Order Age, days</label>
+                </field>
+                <field id="statuses" translate="label" sortOrder="30" type="multiselect" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Order Statuses to be Cancel</label>
+                    <source_model>Eriocnemis\SalesAutoCancel\Model\Config\Source\States</source_model>
+                    <can_be_empty>1</can_be_empty>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>

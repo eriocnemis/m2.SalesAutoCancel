@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © Eriocnemis, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Cron:etc/crontab.xsd">
+    <group id="index">
+        <job name="eriocnemis_sales_autocancel" instance="Eriocnemis\SalesAutoCancel\Cron\HandlingExpiredOrders" method="execute">
+            <schedule>*/1 * * * *</schedule>
+        </job>
+    </group>
+</config>
