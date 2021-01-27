@@ -48,7 +48,7 @@ class Merger implements MergerInterface
      * @param mixed[] $messages
      * @return mixed[]
      */
-    public function merge(array $messages): array
+    public function merge(array $messages)
     {
         $result = [];
         foreach ($messages as $topicName => $topicMessages) {
