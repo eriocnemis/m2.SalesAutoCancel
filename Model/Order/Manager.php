@@ -95,7 +95,7 @@ class Manager implements ManagerInterface
         )->addFilter(
             OrderInterface::CREATED_AT,
             $this->dateTime->formatDate(
-                $this->date->gmtTimestamp() - 3600 * 24 * (int)$this->helper->getAge($storeId)
+                (string)($this->date->gmtTimestamp() - 3600 * 24 * (int)$this->helper->getAge($storeId))
             ),
             'lteq'
         )->create();
