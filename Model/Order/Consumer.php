@@ -5,6 +5,7 @@
  */
 namespace Eriocnemis\SalesAutoCancel\Model\Order;
 
+use Psr\Log\LoggerInterface;
 use Magento\Framework\EntityManager\EntityManager;
 use Magento\Framework\Serialize\SerializerInterface;
 use Magento\AsynchronousOperations\Api\Data\OperationListInterface;
@@ -17,25 +18,24 @@ use Eriocnemis\SalesAutoCancel\Model\Order\ManagerInterface;
 class Consumer
 {
     /**
-     * Order manager
-     *
      * @var ManagerInterface
      */
     private $manager;
 
     /**
-     * Entity manager
-     *
      * @var EntityManager
      */
     private $entityManager;
 
     /**
-     * Serializer
-     *
      * @var SerializerInterface
      */
     private $serializer;
+
+    /**
+     * @var LoggerInterface
+     */
+    private $logger;
 
     /**
      * Initialize consumer
@@ -43,15 +43,18 @@ class Consumer
      * @param ManagerInterface $manager
      * @param SerializerInterface $serializer
      * @param EntityManager $entityManager
+     * @param LoggerInterface $logger
      */
     public function __construct(
         ManagerInterface $manager,
         SerializerInterface $serializer,
-        EntityManager $entityManager
+        EntityManager $entityManager,
+        LoggerInterface $logger
     ) {
         $this->manager = $manager;
         $this->serializer = $serializer;
         $this->entityManager = $entityManager;
+        $this->logger = $logger;
     }
 
     /**
@@ -65,7 +68,6 @@ class Consumer
         foreach ($operationList->getItems() as $operation) {
             $status = $this->processOperation($operation);
             $operation->setStatus($status);
-            $operation->setResultMessage(null);
         }
         $this->entityManager->save($operationList);
     }
@@ -78,16 +80,18 @@ class Consumer
      */
     private function processOperation(OperationInterface $operation)
     {
-        $operationStatus = OperationInterface::STATUS_TYPE_COMPLETE;
+        $operationStatus = OperationInterface::STATUS_TYPE_RETRIABLY_FAILED;
         $serializedData = $operation->getSerializedData();
         $data = $this->serializer->unserialize($serializedData);
 
-        try {
-            $this->manager->cancel($data['order_id']);
-        } catch (\Exception $e) {
-            $operationStatus = OperationInterface::STATUS_TYPE_RETRIABLY_FAILED;
+        if (is_array($data) && isset($data['order_id'])) {
+            try {
+                $this->manager->cancel($data['order_id']);
+                $operationStatus = OperationInterface::STATUS_TYPE_COMPLETE;
+            } catch (\Exception $e) {
+                $this->logger->critical($e->getMessage());
+            }
         }
-
         return $operationStatus;
     }
 }

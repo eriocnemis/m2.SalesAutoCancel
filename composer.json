@@ -3,10 +3,12 @@
     "description": "The extension allows store owners to set up an automated cancellation for orders.",
     "type": "magento2-module",
     "version": "2.2.2",
-    "authors": [{
-        "name": "Eriocnemis Team",
-        "email": "dev.eriocnemis@gmail.com"
-    }],
+    "authors": [
+        {
+            "name": "Eriocnemis Team",
+            "email": "dev.eriocnemis@gmail.com"
+        }
+    ],
     "license": [
         "OSL-3.0"
     ],
