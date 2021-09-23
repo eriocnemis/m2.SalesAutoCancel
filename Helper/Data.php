@@ -6,7 +6,9 @@
 namespace Eriocnemis\SalesAutoCancel\Helper;
 
 use Magento\Store\Model\ScopeInterface;
+use Magento\Framework\App\Helper\Context;
 use Magento\Framework\App\Helper\AbstractHelper;
+use Magento\Framework\Serialize\SerializerInterface;
 
 /**
  * Helper
@@ -19,14 +21,36 @@ class Data extends AbstractHelper
     const XML_ENABLED = 'sales/eriocnemis_sales_autocancel/enabled';
 
     /**
-     * Order age config path
+     * Payments methods config path
      */
-    const XML_AGE = 'sales/eriocnemis_sales_autocancel/age';
+    const XML_PAYMENTS = 'sales/eriocnemis_sales_autocancel/payments';
 
     /**
      * Order statuses config path
      */
     const XML_STATUSES = 'sales/eriocnemis_sales_autocancel/statuses';
+
+    /**
+     * @var SerializerInterface
+     */
+    private $serializer;
+
+    /**
+     * Initialize helper
+     *
+     * @param Context $context
+     * @param SerializerInterface $serializer
+     */
+    public function __construct(
+        Context $context,
+        SerializerInterface $serializer
+    ) {
+        $this->serializer = $serializer;
+
+        parent::__construct(
+            $context
+        );
+    }
 
     /**
      * Check module functionality should be enabled
@@ -40,14 +64,22 @@ class Data extends AbstractHelper
     }
 
     /**
-     * Retrieve order age
+     * Retrieve Payments methods config
      *
      * @param int|null $storeId
-     * @return string
+     * @return mixed[]
      */
-    public function getAge($storeId = null)
+    public function getPayments($storeId = null)
     {
-        return $this->getValue(self::XML_AGE, $storeId);
+        $payments = [];
+        $configData = (array)$this->serializer->unserialize(
+            $this->getValue(self::XML_PAYMENTS, $storeId)
+        );
+
+        foreach ($configData as $data) {
+            $payments[$data['method']] = $data['age'];
+        }
+        return $payments;
     }
 
     /**

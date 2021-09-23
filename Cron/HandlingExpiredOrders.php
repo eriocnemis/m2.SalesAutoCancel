@@ -6,9 +6,9 @@
 namespace Eriocnemis\SalesAutoCancel\Cron;
 
 use Magento\Store\Api\StoreRepositoryInterface;
+use Eriocnemis\SalesAutoCancel\Api\GetMatchOrderIdsInterface;
+use Eriocnemis\SalesAutoCancel\Api\ScheduleBulkInterface;
 use Eriocnemis\SalesAutoCancel\Helper\Data as Helper;
-use Eriocnemis\SalesAutoCancel\Model\Order\ManagerInterface;
-use Eriocnemis\SalesAutoCancel\Model\Order\ScheduleBulk;
 
 /**
  * Handling expired orders job
@@ -16,29 +16,21 @@ use Eriocnemis\SalesAutoCancel\Model\Order\ScheduleBulk;
 class HandlingExpiredOrders
 {
     /**
-     * Schedule bulk
-     *
-     * @var ScheduleBulk
+     * @var ScheduleBulkInterface
      */
     private $scheduleBulk;
 
     /**
-     * Store repository
-     *
      * @var StoreRepositoryInterface
      */
     private $storeRepository;
 
     /**
-     * Order manager
-     *
-     * @var ManagerInterface
+     * @var GetMatchOrderIdsInterface
      */
-    private $manager;
+    private $getMatchOrderIds;
 
     /**
-     * Helper
-     *
      * @var Helper
      */
     private $helper;
@@ -46,20 +38,20 @@ class HandlingExpiredOrders
     /**
      * Initialize job
      *
-     * @param ScheduleBulk $scheduleBulk
+     * @param ScheduleBulkInterface $scheduleBulk
      * @param StoreRepositoryInterface $storeRepository
-     * @param ManagerInterface $manager
+     * @param GetMatchOrderIdsInterface $getMatchOrderIds
      * @param Helper $helper
      */
     public function __construct(
-        ScheduleBulk $scheduleBulk,
+        ScheduleBulkInterface $scheduleBulk,
         StoreRepositoryInterface $storeRepository,
-        ManagerInterface $manager,
+        GetMatchOrderIdsInterface $getMatchOrderIds,
         Helper $helper
     ) {
         $this->scheduleBulk = $scheduleBulk;
         $this->storeRepository = $storeRepository;
-        $this->manager = $manager;
+        $this->getMatchOrderIds = $getMatchOrderIds;
         $this->helper = $helper;
     }
 
@@ -72,8 +64,10 @@ class HandlingExpiredOrders
     {
         foreach ($this->storeRepository->getList() as $store) {
             if ($this->helper->isEnabled($store->getId())) {
-                $orders = $this->manager->getOrderList($store->getId());
-                $this->scheduleBulk->execute($orders);
+                foreach ($this->helper->getPayments($store->getId()) as $method => $age) {
+                    $orderIds = $this->getMatchOrderIds->execute($store->getId(), $method, $age);
+                    $this->scheduleBulk->execute($orderIds, $age);
+                }
             }
         }
     }
