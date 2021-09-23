@@ -72,7 +72,7 @@ class Payments extends AbstractFieldArray
      */
     private function getPaymentSelectRenderer()
     {
-        if (null !== $this->paymentSelect) {
+        if (null === $this->paymentSelect) {
             $this->paymentSelect = $this->getLayout()->createBlock(
                 PaymentSelect::class,
                 '',

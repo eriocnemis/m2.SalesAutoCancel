@@ -101,7 +101,7 @@ class GetMatchOrderIds implements GetMatchOrderIdsInterface
                 ['order' => $this->resource->getTableName(self::ORDER_TABLE_NAME)],
                 [OrderInterface::ENTITY_ID]
             )->joinLeft(
-                ['payment' => $this->resource->getTable(self::PAYMENT_TABLE_NAME)],
+                ['payment' => $this->resource->getTableName(self::PAYMENT_TABLE_NAME)],
                 'order.entity_id = payment.parent_id',
                 []
             )
