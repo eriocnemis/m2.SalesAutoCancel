@@ -4,3 +4,8 @@ parameters:
     reportUnmatchedIgnoredErrors: false
     ignoreErrors:
         - '#Call to an undefined method Magento\\Sales\\Api\\Data\\OrderInterface::addCommentToStatusHistory\(\).#'
+        - '#Call to an undefined method Magento\\Framework\\DataObject::getMethod\(\).#'
+        - '#Call to an undefined method Magento\\Framework\\App\\ResourceConnection::getTable\(\).#'
+        - '#Call to an undefined method Magento\\Sales\\Api\\Data\\OrderInterface::canCancel\(\).#'
+        - '#Call to an undefined method Eriocnemis\\SalesAutoCancel\\Block\\Adminhtml\\Form\\Field\\PaymentSelect::setName\(\).#'
+        - '#Call to an undefined method Magento\\Framework\\View\\Element\\BlockInterface::calcOptionHash\(\).#'

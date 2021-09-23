@@ -8,11 +8,13 @@
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
     <!-- preferences -->
-    <preference for="Eriocnemis\SalesAutoCancel\Model\Order\ManagerInterface" type="Eriocnemis\SalesAutoCancel\Model\Order\Manager"/>
+    <preference for="Eriocnemis\SalesAutoCancel\Api\CancelOrderInterface" type="Eriocnemis\SalesAutoCancel\Model\CancelOrder"/>
+    <preference for="Eriocnemis\SalesAutoCancel\Api\ScheduleBulkInterface" type="Eriocnemis\SalesAutoCancel\Model\ScheduleBulk"/>
+    <preference for="Eriocnemis\SalesAutoCancel\Api\GetMatchOrderIdsInterface" type="Eriocnemis\SalesAutoCancel\Model\ResourceModel\GetMatchOrderIds"/>
     <type name="Magento\Framework\MessageQueue\MergerFactory">
         <arguments>
             <argument name="mergers" xsi:type="array">
-                <item name="eriocnemis.salesautocancel.order" xsi:type="string">Eriocnemis\SalesAutoCancel\Model\Order\Merger</item>
+                <item name="eriocnemis.salesautocancel.order" xsi:type="string">Eriocnemis\SalesAutoCancel\Model\Merger</item>
             </argument>
         </arguments>
     </type>

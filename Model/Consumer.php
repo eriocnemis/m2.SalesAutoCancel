@@ -3,14 +3,14 @@
  * Copyright © Eriocnemis, Inc. All rights reserved.
  * See COPYING.txt for license details.
  */
-namespace Eriocnemis\SalesAutoCancel\Model\Order;
+namespace Eriocnemis\SalesAutoCancel\Model;
 
 use Psr\Log\LoggerInterface;
 use Magento\Framework\EntityManager\EntityManager;
 use Magento\Framework\Serialize\SerializerInterface;
 use Magento\AsynchronousOperations\Api\Data\OperationListInterface;
 use Magento\AsynchronousOperations\Api\Data\OperationInterface;
-use Eriocnemis\SalesAutoCancel\Model\Order\ManagerInterface;
+use Eriocnemis\SalesAutoCancel\Api\CancelOrderInterface;
 
 /**
  * Consumer for auto cancel message
@@ -18,9 +18,9 @@ use Eriocnemis\SalesAutoCancel\Model\Order\ManagerInterface;
 class Consumer
 {
     /**
-     * @var ManagerInterface
+     * @var CancelOrderInterface
      */
-    private $manager;
+    private $cancelOrder;
 
     /**
      * @var EntityManager
@@ -40,18 +40,18 @@ class Consumer
     /**
      * Initialize consumer
      *
-     * @param ManagerInterface $manager
+     * @param CancelOrderInterface $cancelOrder
      * @param SerializerInterface $serializer
      * @param EntityManager $entityManager
      * @param LoggerInterface $logger
      */
     public function __construct(
-        ManagerInterface $manager,
+        CancelOrderInterface $cancelOrder,
         SerializerInterface $serializer,
         EntityManager $entityManager,
         LoggerInterface $logger
     ) {
-        $this->manager = $manager;
+        $this->cancelOrder = $cancelOrder;
         $this->serializer = $serializer;
         $this->entityManager = $entityManager;
         $this->logger = $logger;
@@ -84,14 +84,15 @@ class Consumer
         $serializedData = $operation->getSerializedData();
         $data = $this->serializer->unserialize($serializedData);
 
-        if (is_array($data) && isset($data['order_id'])) {
+        if (is_array($data) && isset($data['order_id']) && isset($data['age'])) {
             try {
-                $this->manager->cancel($data['order_id']);
+                $this->cancelOrder->execute($data['order_id'], $data['age']);
                 $operationStatus = OperationInterface::STATUS_TYPE_COMPLETE;
             } catch (\Exception $e) {
                 $this->logger->critical($e->getMessage());
             }
         }
+
         return $operationStatus;
     }
 }
