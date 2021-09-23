@@ -8,6 +8,6 @@
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:noNamespaceSchemaLocation="urn:magento:framework:Communication/etc/communication.xsd">
     <topic name="eriocnemis.salesautocancel.order" request="Magento\AsynchronousOperations\Api\Data\OperationInterface">
-        <handler name="eriocnemis.salesautocancel.order" type="Eriocnemis\SalesAutoCancel\Model\Order\Consumer" method="process"/>
+        <handler name="eriocnemis.salesautocancel.order" type="Eriocnemis\SalesAutoCancel\Model\Consumer" method="process"/>
     </topic>
 </config>

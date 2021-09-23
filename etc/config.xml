@@ -11,7 +11,6 @@
         <sales>
             <eriocnemis_sales_autocancel>
                 <enabled>1</enabled>
-                <age>30</age>
                 <statuses>new,pending_payment</statuses>
             </eriocnemis_sales_autocancel>
         </sales>
