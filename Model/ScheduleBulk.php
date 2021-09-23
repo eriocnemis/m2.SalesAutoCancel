@@ -3,36 +3,30 @@
  * Copyright © Eriocnemis, Inc. All rights reserved.
  * See COPYING.txt for license details.
  */
-namespace Eriocnemis\SalesAutoCancel\Model\Order;
+namespace Eriocnemis\SalesAutoCancel\Model;
 
 use Magento\Framework\Bulk\BulkManagementInterface;
 use Magento\Framework\Bulk\OperationInterface;
 use Magento\Framework\DataObject\IdentityGeneratorInterface;
 use Magento\Framework\Exception\LocalizedException;
-use Magento\Sales\Api\Data\OrderInterface;
+use Eriocnemis\SalesAutoCancel\Api\ScheduleBulkInterface;
 
 /**
  * Schedule bulk cancel of orders
  */
-class ScheduleBulk
+class ScheduleBulk implements ScheduleBulkInterface
 {
     /**
-     * Bulk management
-     *
      * @var BulkManagementInterface
      */
     private $bulkManagement;
 
     /**
-     * Identity generator
-     *
      * @var IdentityGeneratorInterface
      */
     private $identityService;
 
     /**
-     * Operation builder
-     *
      * @var OperationBuilder
      */
     private $operationBuilder;
@@ -57,18 +51,19 @@ class ScheduleBulk
     /**
      * Schedule new bulk
      *
-     * @param OrderInterface[] $orders
+     * @param int[] $orderIds
+     * @param int $age
      * @throws LocalizedException
      * @return void
      */
-    public function execute(array $orders)
+    public function execute(array $orderIds, int $age): void
     {
-        if (0 == count($orders)) {
+        if (0 == count($orderIds)) {
             return;
         }
 
         $bulkUuid = $this->identityService->generateId();
-        $operations = $this->getBulkOperations($orders, $bulkUuid);
+        $operations = $this->getBulkOperations($orderIds, $age, $bulkUuid);
         $description = __('Automatic cancellation of orders with an expired payment period.');
 
         $result = $this->bulkManagement->scheduleBulk($bulkUuid, $operations, $description);
@@ -82,18 +77,19 @@ class ScheduleBulk
     /**
      * Retrieve bulk operations
      *
-     * @param OrderInterface[] $orders
+     * @param int[] $orderIds
+     * @param int $age
      * @param string $bulkUuid
      * @return OperationInterface[]
      */
-    private function getBulkOperations(array $orders, $bulkUuid)
+    private function getBulkOperations(array $orderIds, int $age, $bulkUuid)
     {
         $operations = [];
-        foreach ($orders as $order) {
+        foreach ($orderIds as $orderId) {
             $operations[] = $this->operationBuilder->build(
                 $bulkUuid,
                 'eriocnemis.salesautocancel.order',
-                ['order_id' => $order->getEntityId()]
+                ['order_id' => $orderId, 'age' => $age]
             );
         }
         return $operations;

@@ -3,7 +3,7 @@
  * Copyright © Eriocnemis, Inc. All rights reserved.
  * See COPYING.txt for license details.
  */
-namespace Eriocnemis\SalesAutoCancel\Model\Config\Source;
+namespace Eriocnemis\SalesAutoCancel\Model\System\Config\Source;
 
 use Magento\Framework\Option\ArrayInterface;
 use Magento\Sales\Model\Order\Config;

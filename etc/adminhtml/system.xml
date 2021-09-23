@@ -15,13 +15,18 @@
                     <label>Enable</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
-                <field id="age" translate="label" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
-                    <label>Order Age, days</label>
-                </field>
-                <field id="statuses" translate="label" sortOrder="30" type="multiselect" showInDefault="1" showInWebsite="1" showInStore="1">
+                <field id="statuses" translate="label" sortOrder="20" type="multiselect" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Order Statuses to be Cancel</label>
-                    <source_model>Eriocnemis\SalesAutoCancel\Model\Config\Source\States</source_model>
+                    <source_model>Eriocnemis\SalesAutoCancel\Model\System\Config\Source\States</source_model>
                     <can_be_empty>1</can_be_empty>
+                </field>
+                <field id="payments" translate="label comment" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Apply on Payment Methods</label>
+                    <frontend_model>Eriocnemis\SalesAutoCancel\Block\Adminhtml\Form\Field\Payments</frontend_model>
+                    <backend_model>Magento\Config\Model\Config\Backend\Serialized\ArraySerialized</backend_model>
+                    <depends>
+                        <field id="enable">1</field>
+                    </depends>
                 </field>
             </group>
         </section>

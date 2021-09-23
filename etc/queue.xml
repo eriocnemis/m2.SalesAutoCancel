@@ -12,7 +12,7 @@
             name="eriocnemis_salesautocancel_order"
             consumer="eriocnemis.salesautocancel.order"
             consumerInstance="Magento\Framework\MessageQueue\BatchConsumer"
-            handler="Eriocnemis\SalesAutoCancel\Model\Order\Consumer::process"
+            handler="Eriocnemis\SalesAutoCancel\Model\Consumer::process"
         />
     </broker>
 </config>

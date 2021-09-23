@@ -13,6 +13,6 @@
         connection="db"
         maxMessages="100"
         consumerInstance="Magento\Framework\MessageQueue\BatchConsumer"
-        handler="Eriocnemis\SalesAutoCancel\Model\Order\Consumer::process"
+        handler="Eriocnemis\SalesAutoCancel\Model\Consumer::process"
     />
 </config>
