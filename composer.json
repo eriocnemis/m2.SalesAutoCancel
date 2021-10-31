@@ -21,10 +21,10 @@
     },
     "autoload": {
         "files": [
-            "registration.php"
+            "src/registration.php"
         ],
         "psr-4": {
-            "Eriocnemis\\SalesAutoCancel\\": ""
+            "Eriocnemis\\SalesAutoCancel\\": "src"
         }
     }
 }
