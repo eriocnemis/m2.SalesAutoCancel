@@ -9,7 +9,7 @@ Version | 2.0.* | 2.1.* | 2.2.* | 2.3.* | 2.4.*
 Magento Community | - | - | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark:
 Magento Enterprise | - | - | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark:
 Magento Cloud | - | - | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark:
-Extension version | - | - | [2.2.3](https://github.com/eriocnemis/m2.SalesAutoCancel/archive/2.2.3.zip) | [2.3.3](https://github.com/eriocnemis/m2.SalesAutoCancel/archive/2.3.3.zip) | [2.4.3](https://github.com/eriocnemis/m2.SalesAutoCancel/archive/2.4.3.zip)
+Extension version | - | - | [2.2.4](https://github.com/eriocnemis/m2.SalesAutoCancel/archive/2.2.4.zip) | [2.3.4](https://github.com/eriocnemis/m2.SalesAutoCancel/archive/2.3.4.zip) | [2.4.4](https://github.com/eriocnemis/m2.SalesAutoCancel/archive/2.4.4.zip)
 
 ## Install
 

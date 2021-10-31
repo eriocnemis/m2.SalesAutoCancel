@@ -2,7 +2,7 @@
     "name": "eriocnemis/module-sales-autocancel",
     "description": "The extension allows store owners to set up an automated cancellation for orders.",
     "type": "magento2-module",
-    "version": "2.4.3",
+    "version": "2.4.4",
     "authors": [
         {
             "name": "Eriocnemis Team",
@@ -21,10 +21,10 @@
     },
     "autoload": {
         "files": [
-            "registration.php"
+            "src/registration.php"
         ],
         "psr-4": {
-            "Eriocnemis\\SalesAutoCancel\\": ""
+            "Eriocnemis\\SalesAutoCancel\\": "src"
         }
     }
 }
